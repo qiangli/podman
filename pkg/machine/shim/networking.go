@@ -81,10 +81,14 @@ func startHostForwarder(mc *vmconfigs.MachineConfig, provider vmconfigs.VMProvid
 	}
 
 	c := cmd.Cmd(binary)
+	detachHelperProcess(c)
 
 	logrus.Debugf("gvproxy command-line: %s %s", binary, strings.Join(cmd.ToCmdline(), " "))
 	if err := c.Start(); err != nil {
 		return fmt.Errorf("unable to execute: %q: %w", cmd.ToCmdline(), err)
+	}
+	if err := c.Process.Release(); err != nil {
+		return fmt.Errorf("release gvproxy process: %w", err)
 	}
 
 	return nil

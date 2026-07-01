@@ -308,6 +308,7 @@ func StartGenericAppleVM(mc *vmconfigs.MachineConfig, cmdBinary string, bootload
 
 		cmd = exec.Command("/usr/bin/open", "-Wa", "Terminal", kdFile.Path)
 	}
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 
 	if err := cmd.Start(); err != nil {
 		return nil, nil, err
