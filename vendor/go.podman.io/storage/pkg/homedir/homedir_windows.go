@@ -29,7 +29,18 @@ func Get() string {
 // GetConfigHome returns the home directory of the current user with the help of
 // environment variables depending on the target operating system.
 // Returned path should be used with "path/filepath" to form new paths.
+//
+// bashy patch: honor XDG_CONFIG_HOME first, matching the unix variant. Upstream
+// Windows ignored it, which made bashy's podman-machine registry isolation
+// (isolateMachineDirs sets XDG_CONFIG_HOME=~/.config/bashy) a NO-OP on Windows —
+// so bashy's machine config dir still collided with a host podman's. Honoring it
+// here isolates the machine registry uniformly across platforms. NOTE: this is a
+// vendored dep; re-apply if go.podman.io/storage is re-vendored. See
+// docs/dks-scratch-vm-appliance-design.md (Windows gaps #1).
 func GetConfigHome() (string, error) {
+	if cfgHomeDir := os.Getenv("XDG_CONFIG_HOME"); cfgHomeDir != "" {
+		return cfgHomeDir, nil
+	}
 	return filepath.Join(Get(), ".config"), nil
 }
 
