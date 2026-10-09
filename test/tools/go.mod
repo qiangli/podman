@@ -1,9 +1,8 @@
 module go.podman.io/podman/test/tools
 
-// Warning: if there is a "toolchain" directive anywhere in this file (and most of the
-// time there shouldn't be), its version must be an exact match to the "go" directive.
+go 1.27
 
-go 1.25.0
+toolchain go1.27.1
 
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.7
