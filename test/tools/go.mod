@@ -2,7 +2,7 @@ module go.podman.io/podman/test/tools
 
 go 1.27
 
-toolchain go1.27.1
+toolchain go1.27.2
 
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.7
